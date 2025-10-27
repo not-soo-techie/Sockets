@@ -24,37 +24,25 @@
       const socket = io();
 
       document.getElementById("registerBtn").onclick = () => {
-        const user = userId.value;
-        socket.emit("register", user);
-        // userId.value = "";
+        const userid = userId.value;
+        socket.emit("register", userid);
       };
 
       document.getElementById("sendPrivate").onclick = () => {
-        const msg = privateMsg.value;
         const to = toUser.value;
-        const from = userId.value;
-        socket.emit("private message", { to, message: msg, from });
+        const message = privateMsg.value;
+        const from = userId.value
+        socket.emit("private message", { to, msg: message, from })
       };
 
       document.getElementById("joinRoom").onclick = () => {
-        const room = roomName.value;
-        socket.emit("join room", room);
+        
       };
 
       document.getElementById("sendGroup").onclick = () => {
-        const msg = groupMsg.value;
-        const room = roomName.value;
-        const from = userId.value;
-        socket.emit("group message", { room, message: msg, from });
+        
       };
 
-      socket.on("private message", (data) => {
-        addMessage(`(Private) ${data.from}: ${data.message}`);
-      });
-
-      socket.on("group message", (data) => {
-        addMessage(`(Group) ${data.from}: ${data.message}`);
-      });
 
       function addMessage(msg) {
         const li = document.createElement("li");
