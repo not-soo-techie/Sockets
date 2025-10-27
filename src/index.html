@@ -24,15 +24,11 @@
       const socket = io();
 
       document.getElementById("registerBtn").onclick = () => {
-        const userid = userId.value;
-        socket.emit("register", userid);
+        
       };
 
       document.getElementById("sendPrivate").onclick = () => {
-        const to = toUser.value;
-        const message = privateMsg.value;
-        const from = userId.value
-        socket.emit("private message", { to, msg: message, from })
+        
       };
 
       document.getElementById("joinRoom").onclick = () => {
