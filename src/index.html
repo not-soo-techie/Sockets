@@ -43,7 +43,8 @@
       document.getElementById("sendGroup").onclick = () => {
         const roomName= document.getElementById("roomName").value;
         const msg= document.getElementById("groupMsg").value;
-        socket.emit("group msg", { roomName, msg });
+        const from= document.getElementById("userId").value;
+        socket.emit("group msg", { roomName, msg, from });
       };
 
       socket.on("private msg", (data) => {
