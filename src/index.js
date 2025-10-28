@@ -30,9 +30,15 @@ io.on("connection", (socket) => {
 
 
   // Group joining
-  
+  socket.on("join room", (roomName) => {
+    socket.join(roomName);
+    console.log(`User ${socket.id} joined room: ${roomName}`);
+  });
 
   // Group message
+  socket.on("group msg", ({ roomName, msg, from }) => {
+    io.to(roomName).emit("group msg", `User ${from} in room ${roomName} sent: ${msg}`);
+  });
   
 
   socket.on("disconnect", () => {

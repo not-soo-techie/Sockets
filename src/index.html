@@ -36,17 +36,29 @@
       };
 
       document.getElementById("joinRoom").onclick = () => {
-        
+        const roomName= document.getElementById("roomName").value;
+        socket.emit("join room", roomName);
       };
 
       document.getElementById("sendGroup").onclick = () => {
-        
+        const roomName= document.getElementById("roomName").value;
+        const msg= document.getElementById("groupMsg").value;
+        socket.emit("group msg", { roomName, msg });
       };
 
       socket.on("private msg", (data) => {
         console.log(data)
         addMessage(data)
         
+      })
+      socket.on("join room", (data) => {
+        console.log(data)
+        addMessage(data)
+        
+      })
+      socket.on("group msg", (data) => {
+        console.log(data)
+        addMessage(data)
       })
 
       function addMessage(msg) {
