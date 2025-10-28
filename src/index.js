@@ -17,9 +17,15 @@ io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
   // When user registers or logs in
-  
+  socket.on("userId", (userId) => {
+    users[userId] = socket.id;
+    console.log("user array:", users);
+  });
 
   // Private messaging
+  socket.on("private msg", ({ to, msg, from }) => {
+    const user = users[to];
+  })
 
 
   // Group joining
