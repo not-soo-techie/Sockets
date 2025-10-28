@@ -25,6 +25,7 @@ io.on("connection", (socket) => {
   // Private messaging
   socket.on("private msg", ({ to, msg, from }) => {
     const user = users[to];
+    io.to(user).emit("private msg", `User ${from} sent: ${msg}`);
   })
 
 

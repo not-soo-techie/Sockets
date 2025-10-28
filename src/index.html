@@ -43,6 +43,11 @@
         
       };
 
+      socket.on("private msg", (data) => {
+        console.log(data)
+        addMessage(data)
+        
+      })
 
       function addMessage(msg) {
         const li = document.createElement("li");
