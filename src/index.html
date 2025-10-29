@@ -15,8 +15,7 @@
     <input id="roomName" placeholder="Room name" />
     <button id="joinRoom">Join Room</button>
     <input id="groupMsg" placeholder="Group message" />
-    <button id="sendGroup">Send</button>
-
+    <button id="sendGroup">Send</button><br/>
     <ul id="messages"></ul>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -24,20 +23,27 @@
       const socket = io();
 
       document.getElementById("registerBtn").onclick = () => {
-        
+        const userId = document.getElementById("userId").value;
+        socket.emit("register", userId);
       };
 
       document.getElementById("sendPrivate").onclick = () => {
-        
+        const toUser = document.getElementById("toUser").value;
+        const msg = document.getElementById("privateMsg").value;
+        socket.emit("private message", toUser, msg);
       };
 
       document.getElementById("joinRoom").onclick = () => {
-        
+        const roomName = document.getElementById("roomName").value;
+        socket.emit("join room", roomName);
       };
 
       document.getElementById("sendGroup").onclick = () => {
-        
+        const roomName = document.getElementById("roomName").value;
+        const msg = document.getElementById("groupMsg").value;
+        socket.emit("group message", roomName, msg);
       };
+
 
 
       function addMessage(msg) {
