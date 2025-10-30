@@ -22,23 +22,51 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+      let currentUser = "";
 
+      // Register
       document.getElementById("registerBtn").onclick = () => {
-        
+        const userId = document.getElementById("userId").value.trim();
+        if (!userId) return alert("Enter a user ID");
+        currentUser = userId;
+        socket.emit("register", userId);
       };
 
+      // Send private message
       document.getElementById("sendPrivate").onclick = () => {
-        
+        const toUser = document.getElementById("toUser").value.trim();
+        const message = document.getElementById("privateMsg").value.trim();
+        if (!toUser || !message) return alert("Fill all fields");
+        socket.emit("private_message", { to: toUser, message, from: currentUser });
+        addMessage(`You (to ${toUser}): ${message}`);
       };
 
+      // Join group
       document.getElementById("joinRoom").onclick = () => {
-        
+        const room = document.getElementById("roomName").value.trim();
+        if (!room) return alert("Enter room name");
+        socket.emit("join_room", room);
       };
 
+      // Send group message
       document.getElementById("sendGroup").onclick = () => {
-        
+        const room = document.getElementById("roomName").value.trim();
+        const message = document.getElementById("groupMsg").value.trim();
+        if (!room || !message) return alert("Enter room and message");
+        socket.emit("group_message", { room, from: currentUser, message });
+        addMessage(`You (in ${room}): ${message}`);
       };
 
+      // Listen for messages
+      socket.on("registered", (msg) => addMessage(msg));
+      socket.on("private_message", ({ from, message }) =>
+        addMessage(`Private from ${from}: ${message}`)
+      );
+      socket.on("joined_room", (msg) => addMessage(msg));
+      socket.on("group_message", ({ from, room, message }) =>
+        addMessage(`${from} (in ${room}): ${message}`)
+      );
+      socket.on("error_message", (msg) => addMessage(`Error: ${msg}`));
 
       function addMessage(msg) {
         const li = document.createElement("li");
