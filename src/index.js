@@ -17,15 +17,28 @@ io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
   // When user registers or logs in
-  
+  socket.on("userId", (userId) => {
+    users[userId] = socket.id;
+    console.log("user array:", users);
+  });
 
   // Private messaging
+  socket.on("private msg", ({ to, msg, from }) => {
+    const user = users[to];
+    io.to(user).emit("private msg", `User ${from} sent: ${msg}`);
+  })
 
 
   // Group joining
-  
+  socket.on("join room", (roomName) => {
+    socket.join(roomName);
+    console.log(`User ${socket.id} joined room: ${roomName}`);
+  });
 
   // Group message
+  socket.on("group msg", ({ roomName, msg, from }) => {
+    io.to(roomName).emit("group msg", `User ${from} in room ${roomName} sent: ${msg}`);
+  });
   
 
   socket.on("disconnect", () => {
@@ -39,3 +52,4 @@ io.on("connection", (socket) => {
 server.listen(3005, () => {
   console.log('Server running at http://localhost:3005');
 });
+// End of file

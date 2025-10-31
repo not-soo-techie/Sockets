@@ -24,21 +24,43 @@
       const socket = io();
 
       document.getElementById("registerBtn").onclick = () => {
-        
+        const userId = document.getElementById("userId").value;
+        socket.emit("userId", userId);
       };
 
       document.getElementById("sendPrivate").onclick = () => {
-        
+        const to= document.getElementById("toUser").value;
+        const msg= document.getElementById("privateMsg").value;
+        const from= document.getElementById("userId").value;
+        socket.emit("private msg", { to, msg, from });
       };
 
       document.getElementById("joinRoom").onclick = () => {
-        
+        const roomName= document.getElementById("roomName").value;
+        socket.emit("join room", roomName);
       };
 
       document.getElementById("sendGroup").onclick = () => {
-        
+        const roomName= document.getElementById("roomName").value;
+        const msg= document.getElementById("groupMsg").value;
+        const from= document.getElementById("userId").value;
+        socket.emit("group msg", { roomName, msg, from });
       };
 
+      socket.on("private msg", (data) => {
+        console.log(data)
+        addMessage(data)
+        
+      })
+      socket.on("join room", (data) => {
+        console.log(data)
+        addMessage(data)
+        
+      })
+      socket.on("group msg", (data) => {
+        console.log(data)
+        addMessage(data)
+      })
 
       function addMessage(msg) {
         const li = document.createElement("li");
